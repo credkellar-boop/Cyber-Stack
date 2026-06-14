@@ -1,25 +1,27 @@
 #!/bin/bash
 set -euo pipefail
 
-# Capture the absolute path to the root of the repo
-ROOT_DIR=$(pwd)
-
+# 1. Build Rust Orchestrator in an isolated subshell
 echo "==> Building Rust Orchestrator..."
-# Use the absolute path explicitly
-cargo build --manifest-path "$ROOT_DIR/core_systems/rust_orchestrator/Cargo.toml" --release
+(
+  cd core_systems/rust_orchestrator
+  # Clear existing lock files that might be causing conflicts
+  rm -f Cargo.lock
+  # Build specifically within this directory
+  cargo build --release
+)
 
 # 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
-rm -rf "$ROOT_DIR/core_systems/build"
-mkdir -p "$ROOT_DIR/core_systems/build"
-cd "$ROOT_DIR/core_systems/build"
+rm -rf core_systems/build
+mkdir -p core_systems/build
+cd core_systems/build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j$(nproc)
-cd "$ROOT_DIR"
+cd ../..
 
 # 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
-# Target the build file using the absolute path
-zig build --build-file "$ROOT_DIR/core_systems/zig_utils/build.zig"
+zig build --build-file core_systems/zig_utils/build.zig
 
 echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
