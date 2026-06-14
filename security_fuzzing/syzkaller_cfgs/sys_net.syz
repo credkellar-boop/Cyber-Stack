@@ -1,0 +1,17 @@
+# Cyber-Stack Syzkaller Domain Grammars
+meta rules
+
+# Define pseudo-syscalls or custom structures targeting eBPF/XDP setups
+resource sock_fd[int32]
+
+cyberstack_open(device ptr[in, string], flags flags[open_flags]) sock_fd
+cyberstack_ioctl(fd sock_fd, cmd cmd_flags, arg ptr[inout, cyberstack_io_struct])
+
+open_flags = O_RDONLY, O_WRONLY, O_RDWR
+cmd_flags = 0x89f0, 0x89f1
+
+cyberstack_io_struct {
+	buffer_address	ptr[in, array[int8]]
+	buffer_length	len[buffer_address, int32]
+	priority_flag	int32
+}
