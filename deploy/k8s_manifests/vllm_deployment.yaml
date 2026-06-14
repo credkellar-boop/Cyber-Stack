@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cyberstack-vllm-deployment
+  namespace: cyber-stack-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-inference
+  template:
+    metadata:
+      labels:
+        app: vllm-inference
+    spec:
+      containers:
+      - name: vllm-container
+        image: cyberstack/vllm-engine:latest
+        ports:
+        - containerPort: 8000
+          name: api-endpoint
+        resources:
+          limits:
+            nvidia.com/gpu: 1
+          requests:
+            nvidia.com/gpu: 1
