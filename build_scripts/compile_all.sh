@@ -1,15 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-# 1. Build Rust Orchestrator in an isolated subshell
-echo "==> Building Rust Orchestrator..."
-(
-  cd core_systems/rust_orchestrator
-  # Clear existing lock files that might be causing conflicts
-  rm -f Cargo.lock
-  # Build specifically within this directory
-  cargo build --release
-)
+echo "==> Building Rust Orchestrator in isolation..."
+# Enter the directory, then build without looking for a workspace
+cd core_systems/rust_orchestrator
+# Use CARGO_MANIFEST_DIR to force the build context to this folder
+CARGO_MANIFEST_DIR=$(pwd) cargo build --release
+cd ../..
 
 # 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
@@ -22,6 +19,6 @@ cd ../..
 
 # 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
-zig build --build-file core_systems/zig_utils/build.zig
+zig build
 
 echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
