@@ -1,0 +1,6 @@
+FROM ubuntu:22.04
+RUN apt-get update && apt-get install -y clang llvm aflplusplus libfuzzer-14-dev
+WORKDIR /fuzzing
+COPY ./security_fuzzing .
+# Setup build environment for AFL++
+RUN make -C afl_harnesses
