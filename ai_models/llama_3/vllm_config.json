@@ -1,0 +1,11 @@
+{
+  "model": "meta-llama/Meta-Llama-3-8B-Instruct",
+  "tensor_parallel_size": 1,
+  "gpu_memory_utilization": 0.90,
+  "max_model_len": 4096,
+  "enforce_eager": false,
+  "kv_cache_dtype": "auto",
+  "quantization": null,
+  "disable_log_requests": true,
+  "trust_remote_code": false
+}
