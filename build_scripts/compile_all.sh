@@ -1,23 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
-echo "==> Building Rust Orchestrator in absolute isolation..."
-
-# Enter the target directory
+# 1. Build Rust Orchestrator
+echo "==> Building Rust Orchestrator..."
+# Move to the directory first. This makes the local folder the "root"
 cd core_systems/rust_orchestrator
-
-# 1. Clear any cached artifacts that might contain bad paths
-rm -f Cargo.lock
-
-# 2. Build without searching for a workspace
-# By calling 'cargo' from inside the directory and explicitly NOT
-# using the --workspace flag, we force it to act on this directory alone.
+# Build without --manifest-path, which forces Cargo to look 
+# only for a Cargo.toml in the current directory (or its parents).
+# Since there is no root Cargo.toml here, it will not trigger workspace logic.
 cargo build --release
-
-# Return to root for the other builds
 cd ../..
 
-# 3. Compile C++/CUDA via CMake
+# 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
 rm -rf core_systems/build
 mkdir -p core_systems/build
@@ -26,7 +20,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j$(nproc)
 cd ../..
 
-# 4. Compile Zig Utilities
+# 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
 zig build
 
