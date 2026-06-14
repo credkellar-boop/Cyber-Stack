@@ -2,17 +2,20 @@
 set -euo pipefail
 
 echo "==> Building Rust Orchestrator..."
-# Move completely out of the root context into the directory
+
+# 1. Enter the specific directory. 
+# Cargo will look for a Cargo.toml in this directory.
+# This prevents it from trying to resolve the root workspace.
 cd core_systems/rust_orchestrator
 
-# Force cargo to ignore the parent workspace definitions entirely
-# by targeting the local package directly.
+# 2. Build the package explicitly.
+# By naming the package, we tell Cargo to focus only on this target.
 cargo build --release --package cyber_stack_orchestrator
 
-# Return to root directory for the remaining builds
+# 3. Return to the root directory for other builds
 cd ../..
 
-# 2. Compile C++/CUDA via CMake
+# 4. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
 rm -rf core_systems/build
 mkdir -p core_systems/build
@@ -21,7 +24,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j$(nproc)
 cd ../..
 
-# 3. Compile Zig Utilities
+# 5. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
 zig build --build-file core_systems/zig_utils/build.zig
 
