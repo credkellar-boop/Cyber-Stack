@@ -1,0 +1,27 @@
+use aya::programs::{Xdp, XdpFlags};
+use aya::{Bpf, BpfLoader};
+use std::convert::TryInto;
+use log::{info, warn};
+
+pub fn load_xdp_program(interface: &str) -> Result<Bpf, aya::BpfError> {
+    info!("Loading Cyber-Stack eBPF/XDP bytecode into kernel space...");
+
+    // Initialize Bpf loader structure
+    let mut bpf = BpfLoader::new().load_into_kernel()?;
+    
+    // Retrieve the compiled XDP program by its section marker
+    let program: &mut Xdp = bpf.program_mut("xdp_pass_prog")
+        .expect("Failed to locate xdp_pass_prog section")
+        .try_into()?;
+
+    // Attach to the specified network interface card
+    info!("Attaching XDP layer to network interface: {}", interface);
+    program.load()?;
+    
+    match program.attach(interface, XdpFlags::default()) {
+        Ok(_) => info!("XDP pipeline successfully hooked into link layer."),
+        Err(e) => warn!("Failed to attach link-layer XDP hook: {:?}", e),
+    }
+
+    Ok(bpf)
+}
