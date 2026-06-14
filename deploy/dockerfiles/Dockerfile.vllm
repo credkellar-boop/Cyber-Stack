@@ -1,0 +1,14 @@
+FROM nvidia/cuda:12.1.1-runtime-ubuntu22.04
+
+RUN apt-get update && apt-get install -y python3-pip python3-dev git && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install specific high-throughput vLLM runtimes
+RUN pip3 install --no-cache-dir vllm==0.4.2
+
+WORKDIR /opt/cyberstack
+
+# Expose local inference server endpoint
+EXPOSE 8000
+
+ENTRYPOINT ["python3", "-m", "vllm.entrypoints.openai.api_server", "--config", "/opt/cyberstack/ai_models/llama_3/vllm_config.json"]
