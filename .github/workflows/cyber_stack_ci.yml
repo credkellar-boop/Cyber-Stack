@@ -33,3 +33,13 @@ jobs:
 
       - name: Run Rust Unit Tests
         run: cargo test
+        - name: Execute Unified Master Build Script
+  run: 
+  
+    echo "Current directory:"
+    pwd
+    echo "Listing contents of core_systems:"
+    ls -R core_systems
+    chmod +x ./build_scripts/compile_all.sh
+    ./build_scripts/compile_all.sh
+
