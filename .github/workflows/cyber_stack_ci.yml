@@ -1,45 +1,9 @@
-name: build_and_test
-
-on:
-  push:
-    branches: [ "main", "master" ]
-  pull_request:
-    branches: [ "main", "master" ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Run actions/checkout@v3
-        uses: actions/checkout@v3
-
-      - name: Install System Dependencies
-        run: |
-          sudo apt-get update
-
-      - name: Install Zig Compiler
-        uses: mlugg/setup-zig@v1
-        with:
-          version: 0.11.0
-
-      - name: Set up Rust Toolchain
-        uses: dtolnay/rust-toolchain@stable
-
-      - name: Execute Unified Master Build Script
-        run: |
-          chmod +x ./build_scripts/compile_all.sh
-          ./build_scripts/compile_all.sh
-
-      - name: Run Rust Unit Tests
-        run: cargo test
-        - name: Execute Unified Master Build Script
-  run: 
-  
-    echo "Current directory:"
-    pwd
-    echo "Listing contents of core_systems:"
-    ls -R core_systems
-    chmod +x ./build_scripts/compile_all.sh
-    ./build_scripts/compile_all.sh
+    - name: Execute Unified Master Build Script
+      run: |
+        echo "Current directory:"
+        pwd
+        echo "Listing contents of core_systems:"
+        ls -R core_systems
+        chmod +x ./build_scripts/compile_all.sh
+        ./build_scripts/compile_all.sh
 
