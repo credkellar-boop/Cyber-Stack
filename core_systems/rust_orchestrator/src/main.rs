@@ -3,11 +3,9 @@ use log::{info, error};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    // Initialize standard environment logging
     env_logger::Builder::from_env(env_logger::Env::default().default_filter_or("info")).init();
     info!("Initializing Cyber-Stack Master Orchestrator...");
 
-    // Placeholder loop for system management and coordination threads
     tokio::select! {
         _ = tokio::signal::ctrl_c() => {
             info!("Shutdown signal received. Cleaning up subsystem contexts...");
