@@ -17,12 +17,11 @@ jobs:
       - name: Install System Dependencies
         run: |
           sudo apt-get update
-          # Add any required system apt dependencies here if needed
 
       - name: Install Zig Compiler
-        uses: korandiru/setup-zig@v1
+        uses: mlugg/setup-zig@v1
         with:
-          zig-version: 0.11.0 # Adjust to your required version
+          version: 0.11.0
 
       - name: Set up Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
@@ -34,4 +33,3 @@ jobs:
 
       - name: Run Rust Unit Tests
         run: cargo test
-
