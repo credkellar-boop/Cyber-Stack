@@ -1,0 +1,24 @@
+# Cyber-Stack Automation Profile for SQLMap Core
+[Target]
+direct = False
+
+[Request]
+timeout = 10
+retries = 3
+agent = CyberStack-Auditing-Engine/1.0
+keepAlive = True
+
+[Optimization]
+predictOutput = True
+keepAlive = True
+threads = 4
+
+[Injection]
+risk = 1
+level = 1
+
+[Technique]
+technique = BEUST
+
+[Logging]
+verbose = 1
