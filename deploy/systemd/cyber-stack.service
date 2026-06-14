@@ -1,0 +1,19 @@
+[Unit]
+Description=Cyber-Stack Master Orchestrator Engine
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/cyberstack
+ExecStart=/opt/cyberstack/cyber_stack_orchestrator
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=65536
+LimitMEMLOCK=infinity
+Environment="RUST_LOG=info"
+Environment="CONFIG_PATH=/opt/cyberstack/config.toml"
+
+[Install]
+WantedBy=multi-user.target
