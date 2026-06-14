@@ -1,12 +1,13 @@
-#!/bin/bash
 set -euo pipefail
 
 echo "==> Compiling Core Cyber-Stack Workspace"
 
 # 1. Compile Rust Modules
 echo "==> Building Rust Orchestrator..."
-# Explicitly build the workspace from the root
-cargo build --release -p cyber_stack_orchestrator
+# Move into the directory first, then build
+cd core_systems/rust_orchestrator
+cargo build --release
+cd ../.. # Return to root
 
 # 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
