@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "==> Building Rust Orchestrator..."
-# Force Cargo to build the specific manifest directly
+# Force Cargo to build the specific manifest directly, ignoring root workspace
 cargo build --manifest-path core_systems/rust_orchestrator/Cargo.toml --release
 
 # 2. Compile C++/CUDA via CMake
