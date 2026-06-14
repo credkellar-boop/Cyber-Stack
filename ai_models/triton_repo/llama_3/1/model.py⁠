@@ -1,0 +1,23 @@
+import triton_python_backend_utils as pb_utils
+import numpy as np
+
+class TritonPythonModel:
+    def initialize(self, args):
+        self.model_config = pb_utils.Message(args['model_config'])
+        print("[*] Triton Python Backend: Initialized custom Llama 3 routing logic.")
+
+    def execute(self, requests):
+        responses = []
+        for request in requests:
+            # Extract incoming byte tensor
+            in_tensor = pb_utils.get_input_tensor_by_name(request, "input_ids")
+            in_data = in_tensor.as_numpy()
+
+            # Placeholder for bridging data to the underlying vLLM backend
+            out_data = np.array([42], dtype=np.int32) 
+            
+            out_tensor = pb_utils.Tensor("output_ids", out_data)
+            response = pb_utils.InferenceResponse(output_tensors=[out_tensor])
+            responses.append(response)
+            
+        return responses
