@@ -1,0 +1,39 @@
+name: Cyber-Stack Core CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-22.04
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Install System Dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y cmake clang libdpdk-dev liburing-dev
+
+    - name: Install Zig Compiler
+      uses: goto-bus-stop/setup-zig@v2
+      with:
+        version: 0.11.0
+
+    - name: Set up Rust Toolchain
+      uses: actions-rs/toolchain@v1
+      with:
+        profile: minimal
+        toolchain: stable
+        override: true
+
+    - name: Execute Unified Master Build Script
+      run: ./build_scripts/compile_all.sh
+
+    - name: Run Rust Unit Tests
+      run: cd core_systems/rust_orchestrator && cargo test --release
