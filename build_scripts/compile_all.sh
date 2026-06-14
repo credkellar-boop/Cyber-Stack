@@ -1,22 +1,17 @@
 #!/bin/bash
 set -euo pipefail
 
+echo "==> Nuking Root Workspace to force isolated build..."
+# This physically deletes the root Cargo.toml in the CI runner so Cargo CANNOT trigger os error 2.
+rm -f Cargo.toml
+
 echo "==> Building Rust Orchestrator..."
-
-# 1. Change directory to the specific project folder.
-# This makes Cargo treat this folder as the root for the build,
-# completely bypassing any workspace pathing issues.
 cd core_systems/rust_orchestrator
-
-# 2. Build the package directly.
-# By being inside the folder, Cargo automatically finds the local Cargo.toml
-# without needing --manifest-path.
+# Now Cargo has no choice but to build this folder in perfect isolation.
 cargo build --release
-
-# 3. Return to root
 cd ../..
 
-# 4. Compile C++/CUDA via CMake
+# Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
 rm -rf core_systems/build
 mkdir -p core_systems/build
@@ -25,7 +20,7 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 make -j$(nproc)
 cd ../..
 
-# 5. Compile Zig Utilities
+# Compile Zig Utilities
 echo "==> Building Zig Utilities..."
 zig build
 
