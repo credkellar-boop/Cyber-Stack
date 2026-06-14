@@ -1,0 +1,27 @@
+[package]
+name = "cyber_stack_orchestrator"
+version = "0.1.0"
+edition = "2021"
+authors = ["Cyber-Stack Admin"]
+
+[dependencies]
+# Async runtime
+tokio = { workspace = true }
+anyhow = { workspace = true }
+log = { workspace = true }
+env_logger = { workspace = true }
+
+# eBPF user-space loader
+aya = "0.11"
+aya-log = "0.1"
+
+# JSON and HTTP (for vLLM/Triton routing)
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+reqwest = { version = "0.11", features = ["json"] }
+
+# In-memory YARA scanning
+yara = "0.18"
+
+[build-dependencies]
+cc = "1.0"
