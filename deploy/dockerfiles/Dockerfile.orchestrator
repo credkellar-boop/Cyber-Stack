@@ -1,0 +1,30 @@
+# Stage 1: Build Environment
+FROM rust:1.75-bookworm AS builder
+
+# Install CMake, Zig, and Clang for cross-language compilation
+RUN apt-get update && apt-get install -y cmake clang libdpdk-dev liburing-dev
+RUN wget https://ziglang.org/download/0.11.0/zig-linux-x86_64-0.11.0.tar.xz && \
+    tar -xf zig-linux-x86_64-0.11.0.tar.xz && \
+    mv zig-linux-x86_64-0.11.0 /usr/local/zig
+ENV PATH="/usr/local/zig:${PATH}"
+
+WORKDIR /usr/src/cyber-stack
+
+# Copy the entire monorepo into the builder
+COPY . .
+
+# Run the master bash compilation pipeline
+RUN ./build_scripts/compile_all.sh
+
+# Stage 2: Minimal Runtime
+FROM debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y libdpdk-dev liburing-dev && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/cyberstack
+COPY --from=builder /usr/src/cyber-stack/core_systems/rust_orchestrator/target/release/cyber_stack_orchestrator /opt/cyberstack/
+
+# Expose orchestrator management port
+EXPOSE 9000
+
+CMD ["./cyber_stack_orchestrator"]
