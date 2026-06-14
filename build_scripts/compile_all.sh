@@ -1,26 +1,26 @@
-#!/usr/bin/env bash
+#!/bin/bash
 set -euo pipefail
 
-echo "=================================================="
-echo "⚡ Compiling Core Cyber-Stack Workspace"
-echo "=================================================="
+echo "==> Compiling Core Cyber-Stack Workspace"
 
 # 1. Compile Rust Modules
-echo "-> Building Rust Orchestrator..."
+echo "==> Building Rust Orchestrator..."
 cargo build --release --workspace
 
-# 2. Compile C/C++/CUDA via CMake
-echo "-> Building C/C++/CUDA Core Targets..."
+# 2. Compile C++/CUDA via CMake
+echo "==> Building C++/CUDA Core Targets..."
+# Remove old build folder to ensure a clean state
+rm -rf core_systems/build
 mkdir -p core_systems/build
 cd core_systems/build
-cmake -DCMAKE_BUILD_TYPE=Release ../..
-make -j$(nproc)
+
+# Run cmake and catch errors
+cmake -DCMAKE_BUILD_TYPE=Release .. || { echo "CMake failed"; exit 1; }
+make -j$(nproc) || { echo "Make failed"; exit 1; }
 cd ../..
 
 # 3. Compile Zig Utilities
-echo "-> Building Zig Utilities..."
+echo "==> Building Zig Utilities..."
 zig build
 
-echo "=================================================="
-echo "✅ All Cyber-Stack Subsystems Built Successfully!"
-echo "=================================================="
+echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
