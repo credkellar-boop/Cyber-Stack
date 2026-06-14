@@ -1,0 +1,20 @@
+[network]
+# Physical interface to bind the XDP/eBPF hooks
+bpf_interface = "eth0"
+dpdk_port_id = 0
+
+[inference]
+vllm_endpoint = "http://localhost:8000/v1/completions"
+triton_endpoint = "http://localhost:8001"
+max_retries = 3
+timeout_ms = 5000
+
+[security]
+# Threshold for triggering deep YARA scans on packet payloads
+entropy_threshold = 0.85
+# Maximum payload size to buffer in memory before dropping (DDoS protection)
+max_buffer_size_kb = 4096
+
+[fuzzing]
+# Enable continuous in-process fuzzing telemetry
+active_telemetry = true
