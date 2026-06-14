@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cyberstack-config
+data:
+  base_rules.yar: |
+    rule Alert_Potential_Backdoor { strings: $s = "cmd.exe" condition: $s }
+  system_prompt.txt: |
+    You are an expert security auditor. Analyze the provided logs for patterns.
