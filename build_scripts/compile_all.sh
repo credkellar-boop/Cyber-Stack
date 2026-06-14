@@ -2,7 +2,7 @@
 set -euo pipefail
 
 echo "==> Building Rust Orchestrator..."
-# Use --manifest-path to point directly to the file
+# Force Cargo to build the specific manifest directly
 cargo build --manifest-path core_systems/rust_orchestrator/Cargo.toml --release
 
 # 2. Compile C++/CUDA via CMake
@@ -16,7 +16,6 @@ cd ../..
 
 # 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
-# Explicitly use the zig build file path if needed
 zig build --build-file core_systems/zig_utils/build.zig
 
 echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
