@@ -1,13 +1,9 @@
+#!/bin/bash
 set -euo pipefail
 
-echo "==> Compiling Core Cyber-Stack Workspace"
-
-# 1. Compile Rust Modules
 echo "==> Building Rust Orchestrator..."
-# Move into the directory first, then build
-cd core_systems/rust_orchestrator
-cargo build --release
-cd ../.. # Return to root
+# Use --manifest-path to point directly to the file
+cargo build --manifest-path core_systems/rust_orchestrator/Cargo.toml --release
 
 # 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
@@ -20,6 +16,7 @@ cd ../..
 
 # 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
-zig build
+# Explicitly use the zig build file path if needed
+zig build --build-file core_systems/zig_utils/build.zig
 
 echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
