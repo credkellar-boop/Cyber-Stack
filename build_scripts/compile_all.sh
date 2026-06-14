@@ -1,15 +1,12 @@
 #!/bin/bash
 set -euo pipefail
 
-# 1. Build Rust Orchestrator
 echo "==> Building Rust Orchestrator..."
-# Move to the directory first. This makes the local folder the "root"
-cd core_systems/rust_orchestrator
-# Build without --manifest-path, which forces Cargo to look 
-# only for a Cargo.toml in the current directory (or its parents).
-# Since there is no root Cargo.toml here, it will not trigger workspace logic.
-cargo build --release
-cd ../..
+
+# 1. Build Rust Orchestrator
+# By using --manifest-path, we target the specific file directly.
+# Since the root [workspace] block is removed, this will not trigger workspace discovery.
+cargo build --manifest-path core_systems/rust_orchestrator/Cargo.toml --release
 
 # 2. Compile C++/CUDA via CMake
 echo "==> Building C++/CUDA Core Targets..."
@@ -22,6 +19,7 @@ cd ../..
 
 # 3. Compile Zig Utilities
 echo "==> Building Zig Utilities..."
-zig build
+# Target the build file directly
+zig build --build-file core_systems/zig_utils/build.zig
 
 echo "==> ✅ All Cyber-Stack Subsystems Built Successfully!"
