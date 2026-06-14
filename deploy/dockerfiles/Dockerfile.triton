@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/tritonserver:24.03-py3
+
+# Install dependencies required for system coordination and IPC
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libnuma-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expose Triton's standard serving routes (HTTP, gRPC, Metrics)
+EXPOSE 8000
+EXPOSE 8001
+EXPOSE 8002
+
+# Establish entry point pointing to your badge-mapped model repository
+CMD ["tritonserver", "--model-repository=/opt/cyberstack/ai_models/triton_repo", "--model-control-mode=explicit"]
