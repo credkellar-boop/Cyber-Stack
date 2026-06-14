@@ -1,5 +1,4 @@
 [workspace]
 members = [
-    "core_systems/rust_orchestrator",
+    "core_systems/rust_orchestrator"
 ]
-
