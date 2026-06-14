@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 3.18)
+
+# Find DPDK pkg-config modules
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(DPDK REQUIRED libdpdk)
+
+add_library(dpdk_pipeline STATIC dpdk_init.c packet_loop.c)
+
+# Inject DPDK compilation flags and include paths
+target_include_directories(dpdk_pipeline PUBLIC ${DPDK_INCLUDE_DIRS} ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_directories(dpdk_pipeline PUBLIC ${DPDK_LIBRARY_DIRS})
+target_link_libraries(dpdk_pipeline PUBLIC ${DPDK_LIBRARIES})
+target_compile_options(dpdk_pipeline PUBLIC ${DPDK_CFLAGS})
