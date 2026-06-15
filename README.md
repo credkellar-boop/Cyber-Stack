@@ -14,29 +14,6 @@ An ultra-high-performance framework combining kernel-level networking, asynchron
 
 Traditional security auditing and automated penetration testing pipelines suffer from fragmentation, severe I/O bottlenecks, and a lack of intelligent, on-the-fly adaptability. **Cyber-Stack** solves this by unifying bare-metal packet processing (via eBPF/XDP and DPDK), a memory-safe orchestration backend (Rust), and on-device generative AI reasoning (Llama 3 with CUDA acceleration). This creates a continuous, high-speed, autonomous offensive security platform capable of analyzing payloads, bypassing WAFs, and orchestrating exploits without the latency overhead of the standard Linux network stack. 
 
-## 📂 System Layout Diagram
-
-```text
-cyber-stack/
-├── red_team_infrastructure/ # CATEGORY: Red Team Infrastructure
-│   ├── sqlmap/              # Integrations for automated database takeover
-│   ├── tamper_scripts/      # Custom scripts for WAF bypass & payload obfuscation
-│   └── yara/                # Pattern matching rules for malware & memory scanning
-├── ai_models/               # CATEGORY: AI
-│   └── llama_3/             # Local Llama 3 weights, tokenizers, and prompt templates
-├── low_level_perf/          # CATEGORY: Low-Level Perf
-│   ├── dpdk_supported/      # User-space network packet processing bypass
-│   ├── io_uring/            # High-performance, asynchronous disk & network I/O
-│   └── kernel_hooks/
-│       ├── ebpf/            # Safe, in-kernel observability and tracing
-│       └── xdp/             # eXpress Data Path for bare-metal packet dropping
-├── core_systems/            # (The foundational glue from the previous steps)
-│   ├── rust_orchestrator/   # Memory-safe backend tying the modules together
-│   └── cuda_acceleration/   # GPU offloading for Llama 3
-├── security_fuzzing/        # AFL++, syzkaller, and libFuzzer targets
-├── deploy/                  # Deployment configurations
-├── build_scripts/           # Unified compilation pipelines
-└── README.md
 ```
 
 ## 🏗 Architecture Directory
