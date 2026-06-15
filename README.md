@@ -1,3 +1,6 @@
+<p align="center">
+  <img src="IMG_0727.png" alt="Profile Image" width="400"/>
+</p>
 # 🔗 Cyber-Stack
 An ultra-high-performance framework combining kernel-level networking, asynchronous I/O, offensive auditing infrastructure, and local generative AI orchestration.
 
