@@ -1,4 +1,5 @@
 # 🔗 Cyber-Stack
+An ultra-high-performance framework combining kernel-level networking, asynchronous I/O, offensive auditing infrastructure, and local generative AI orchestration.
 
 ## 🛠️ Architecture & Core Components (Badges)
 
@@ -46,9 +47,6 @@
 ![Cargo Workspace](https://img.shields.io/badge/📦%20Build-Cargo%20Workspace-A37158?style=flat-square&logo=rust&logoColor=white)
 ![Build Zig](https://img.shields.io/badge/🏗️%20Build-build.zig-F7A41D?style=flat-square&logo=zig&logoColor=white)
 ![CMake Lists](https://img.shields.io/badge/📜%20Build-CMakeLists.txt-064F8C?style=flat-square&logo=cmake&logoColor=white)
-
-
-An ultra-high-performance framework combining kernel-level networking, asynchronous I/O, offensive auditing infrastructure, and local generative AI orchestration.
 
 ## 🎯 The Problem It Solves
 
