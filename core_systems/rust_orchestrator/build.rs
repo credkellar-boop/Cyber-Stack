@@ -1,20 +1,10 @@
-use std::env;
-use std::path::Path;
+#!/bin/bash
+set -e
 
-fn main() {
-    let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let package_path = Path::new(&manifest_dir);
+# 1. Compile the Zig static library inside its own module directory
+cd core_systems/zig_utils
+zig build --summary all
 
-    // Step out of core_systems/rust_orchestrator to find the root zig-out folder
-    let zig_lib_dir = package_path
-        .parent() // core_systems/
-        .unwrap()
-        .parent() // Cyber-Stack/ (root)
-        .unwrap()
-        .join("zig-out")
-        .join("lib");
-
-    println!("cargo:rustc-link-search=native={}", zig_lib_dir.display());
-    println!("cargo:rustc-link-lib=static=zig_utils");
-    println!("cargo:rerun-if-changed=build.rs");
-}
+# 2. Return to the repository root and compile the Rust workspace
+cd ../..
+cargo build --release
