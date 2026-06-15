@@ -1,4 +1,1 @@
-#!/bin/bash
-set -e
-
-cargo build --workspace
+build_scripts/compile_all.
