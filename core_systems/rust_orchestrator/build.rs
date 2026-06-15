@@ -2,22 +2,21 @@ use std::env;
 use std::path::PathBuf;
 
 fn main() {
-    let project_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
-    let root_dir = PathBuf::from(&project_dir).parent().unwrap().parent().unwrap().to_path_buf();
+    // 1. Get the absolute path to core_systems/rust_orchestrator
+    let manifest_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
+    let mut core_systems_dir = PathBuf::from(manifest_dir);
+    core_systems_dir.pop(); // Step up to core_systems/
 
-    // Link Zig memory utilities
-    println!("cargo:rustc-link-search=native={}/core_systems/zig-out/lib", root_dir.display());
+    // 2. Point to where the Zig compiler dumps the static library
+    // (Standard Zig layout puts it in zig_utils/zig-out/lib/)
+    let zig_lib_path = core_systems_dir.join("zig_utils").join("zig-out").join("lib");
+
+    // 3. Pass the missing -L flag to Cargo
+    println!("cargo:rustc-link-search=native={}", zig_lib_path.display());
+
+    // 4. Link the static library
     println!("cargo:rustc-link-lib=static=zig_utils");
 
-    // Link CUDA acceleration objects
-    println!("cargo:rustc-link-search=native={}/core_systems/build/cuda_acceleration", root_dir.display());
-    println!("cargo:rustc-link-lib=static=cuda_acceleration");
-
-    // Link DPDK pipeline objects
-    println!("cargo:rustc-link-search=native={}/core_systems/build/low_level_perf/dpdk_pipeline", root_dir.display());
-    println!("cargo:rustc-link-lib=static=dpdk_pipeline");
-
-    // Force rebuild if external library directories change
-    println!("cargo:rerun-if-changed={}/core_systems/zig-out/lib", root_dir.display());
-    println!("cargo:rerun-if-changed={}/core_systems/build", root_dir.display());
+    // Re-run this script only if build.rs itself changes
+    println!("cargo:rerun-if-changed=build.rs");
 }
