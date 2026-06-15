@@ -15,3 +15,7 @@ async fn main() -> Result<()> {
     info!("Cyber-Stack orchestrator stopped cleanly.");
     Ok(())
 }
+
+fn main() {
+    println!("Cyber-Stack orchestrator initialized successfully.");
+}
