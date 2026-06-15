@@ -1,5 +1,5 @@
 use anyhow::Result;
-use log::{info, error};
+use log::info;
 
 #[tokio::main]
 async fn main() -> Result<()> {
