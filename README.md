@@ -66,6 +66,23 @@ Traditional security auditing and automated penetration testing pipelines suffer
 
 ## ⚙️ Prerequisites
 
+# ⚡ Cyber-Stack
+
+**A high-performance offensive security & AI orchestration monorepo.**
+
+Cyber-Stack bridges traditional Red Team infrastructure (SQLMap, YARA) with local AI (Llama 3) via ultra-low-level kernel networking. Built for maximum throughput and memory-safe vulnerability auditing.
+
+### ✨ Why it's cool
+* **Local AI Integration:** Wires Llama 3 directly into offensive security workflows.
+* **Kernel-Bypass Networking:** Achieves massive throughput using eBPF, XDP, and DPDK.
+* **Memory-Safe & Asynchronous:** Orchestrated in Rust with Zig utilities, backed by `io_uring` for true async I/O.
+
+### 🚀 Quick Start
+```bash
+git clone [https://github.com/credkellar-boop/Cyber-Stack.git](https://github.com/credkellar-boop/Cyber-Stack.git)
+cd Cyber-Stack
+./build_scripts/compile_all.sh
+
 * Linux Kernel >= 5.15 (Required for advanced `io_uring` and XDP features)
 * LLVM/Clang (eBPF compilation)
 * Rust (Cargo workspace tooling)
